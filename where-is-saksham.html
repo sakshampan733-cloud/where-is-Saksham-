@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Where's Saksham — Japan 2026</title>
+<meta name="theme-color" content="#0D0B09">
+<meta name="description" content="A live-ish look at where Saksham is on the Japan trip, 4–14 August 2026. Estimated timings, Japan and India time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Palette lifted from Torii's :root so this reads as the same trip. */
+:root{
+  --bg:#0D0B09;
+  --bg2:#13100D;
+  --panel:#181410;
+  --panel2:#1E1914;
+  --line:#2B251D;
+  --line-soft:#221D16;
+  --text:#EFE8DB;
+  --text-soft:#C9C0B0;
+  --muted:#85796A;
+  --shu:#E8503C;
+  --shu-deep:#B5301F;
+  --shu-glow:rgba(232,80,60,.35);
+  --gold:#D9A84E;
+  --gold-glow:rgba(217,168,78,.3);
+  --sleep:#6E7FA3;
+  --transit:#5E9C9C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}  /* the sun overhangs the right edge */
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Zen Kaku Gothic New',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  font-weight:300;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  padding:0 0 64px;
+  overflow-x:hidden;
+  position:relative;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(circle at 78% -8%, rgba(232,80,60,.10), transparent 55%);
+}
+
+/* ---------- THE SUN ----------
+   Torii's hero sun, same gradient, same breathe, same parallax. */
+.hero-sun{
+  position:absolute;top:18px;right:-19%;z-index:0;pointer-events:none;
+  width:min(56vw,300px);height:min(56vw,300px);border-radius:50%;
+  background:radial-gradient(circle at 38% 36%, #FF6A50, var(--shu) 55%, var(--shu-deep));
+  box-shadow:0 0 140px 30px var(--shu-glow);
+  animation:breathe 7s ease-in-out infinite;
+  will-change:transform;
+}
+@keyframes breathe{0%,100%{filter:brightness(1)}50%{filter:brightness(1.12)}}
+.mincho{font-family:'Shippori Mincho',Georgia,serif}
+.wrap{width:100%;max-width:660px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+/* ---------- HEADER ---------- */
+header{padding:150px 0 22px;border-bottom:1px solid var(--line-soft)}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .sun{width:13px;height:13px;border-radius:50%;background:var(--shu);box-shadow:0 0 14px var(--shu-glow);flex:none}
+.brand .bt{font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--text-soft)}
+h1{font-family:'Shippori Mincho',Georgia,serif;font-size:clamp(30px,8vw,44px);font-weight:700;line-height:1.15;margin-top:16px;letter-spacing:-.01em;text-shadow:0 2px 22px rgba(0,0,0,.5)}
+h1 .jp{display:block;font-size:.42em;color:var(--shu);letter-spacing:.3em;font-weight:500;margin-top:12px}
+.trip-line{margin-top:14px;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+.caveat{
+  margin-top:18px;padding:11px 14px;
+  border:1px solid var(--line);border-left:2px solid var(--gold);
+  background:var(--bg2);
+  font-size:12.5px;line-height:1.55;color:var(--text-soft);
+}
+.caveat b{color:var(--gold);font-weight:700}
+
+/* ---------- VIEW TOGGLE ---------- */
+/* ---------- MAP ---------- */
+#mapWrap{margin-top:26px;border:1px solid var(--line);background:var(--bg2);position:relative}
+#map{height:min(62vh,460px);width:100%;background:#0F0C0A}
+#map.dead{display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;color:var(--muted);font-size:13.5px;line-height:1.7}
+.map-cap{padding:14px 16px;border-top:1px solid var(--line-soft);font-size:12.5px;color:var(--muted);line-height:1.6}
+.map-acts{display:flex;gap:8px;padding:0 16px 14px}
+.map-acts button{
+  flex:1;font-family:inherit;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+  padding:9px 6px;background:none;border:1px solid var(--line);color:var(--muted);cursor:pointer;
+  transition:color .2s,border-color .2s}
+.map-acts button:hover{color:var(--text-soft);border-color:var(--muted)}
+.map-acts button:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+.map-cap b{color:var(--text-soft);font-weight:500}
+.map-cap .t{display:block;margin-top:5px;font-size:11.5px;font-variant-numeric:tabular-nums}
+/* Leaflet's own chrome, restyled to Torii's palette */
+.leaflet-container{background:#0F0C0A!important;font-family:inherit!important}
+.leaflet-control-attribution{background:rgba(13,11,9,.82)!important;color:var(--muted)!important;font-size:9.5px!important}
+.leaflet-control-attribution a{color:var(--muted)!important}
+.leaflet-bar a{background:var(--panel)!important;color:var(--text-soft)!important;border-color:var(--line)!important}
+.leaflet-bar a:hover{background:var(--panel2)!important}
+.leaflet-tile-pane{filter:saturate(.75) brightness(.92)}
+/* the estimated position */
+.me-dot{width:16px;height:16px;border-radius:50%;background:var(--shu);
+  box-shadow:0 0 0 3px rgba(232,80,60,.28),0 0 22px var(--shu-glow);position:relative}
+.me-dot::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:1.5px solid var(--shu);
+  animation:mePing 2.2s ease-out infinite}
+@keyframes mePing{0%{transform:scale(.45);opacity:.95}100%{transform:scale(1.5);opacity:0}}
+.stop-dot{width:9px;height:9px;border-radius:50%;background:var(--bg);border:1.5px solid var(--gold);opacity:.9}
+.stop-dot.done{border-color:var(--muted);opacity:.5}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--panel)!important;color:var(--text)!important;border:1px solid var(--line)!important;box-shadow:0 10px 34px rgba(0,0,0,.5)!important}
+.leaflet-popup-content{margin:11px 13px!important;font-size:13px!important;line-height:1.5!important}
+.leaflet-popup-content .pt{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--shu);display:block;margin-bottom:4px}
+.leaflet-popup-close-button{color:var(--muted)!important}
+@media(prefers-reduced-motion:reduce){.me-dot::after{animation:none;opacity:.3}}
+
+.switch{display:flex;gap:8px;margin:22px 0 4px}
+.switch button{
+  flex:1;font-family:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;
+  padding:12px 8px;background:none;border:1px solid var(--line);color:var(--muted);cursor:pointer;
+  transition:color .25s,border-color .25s,background .25s;
+}
+.switch button.on{color:var(--text);border-color:var(--shu);background:rgba(232,80,60,.08)}
+.switch button:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+
+/* ---------- NOW BANNER ---------- */
+.nowcard{
+  margin-top:26px;border:1px solid var(--line);border-top:2px solid var(--shu);
+  background:linear-gradient(160deg,var(--panel),var(--bg2));padding:22px 20px;
+}
+.nowcard .k{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--shu);font-weight:700;display:flex;align-items:center;gap:9px}
+.nowcard h2{font-family:'Shippori Mincho',Georgia,serif;font-size:clamp(20px,5.5vw,26px);font-weight:700;line-height:1.3;margin-top:12px}
+.nowcard .when{margin-top:12px;font-size:12.5px;color:var(--text-soft);letter-spacing:.04em}
+.dot{margin:0 7px;opacity:.55}
+.nowcard p{margin-top:12px;font-size:13.5px;color:var(--muted);line-height:1.6}
+.pulse{width:9px;height:9px;border-radius:50%;background:var(--shu);flex:none;position:relative;box-shadow:0 0 10px var(--shu-glow)}
+.pulse::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid var(--shu);animation:ring 2.2s ease-out infinite}
+@keyframes ring{0%{transform:scale(.5);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+
+/* ---------- DAY ---------- */
+.day{margin-top:38px}
+.day-head{border-top:1px solid var(--line);padding-top:18px}
+.day-head .meta{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.day-head h3{font-family:'Shippori Mincho',Georgia,serif;font-size:clamp(21px,5vw,27px);font-weight:700;margin-top:6px;line-height:1.25}
+.day-head h3 .jp{color:var(--shu);font-size:.6em;font-weight:500;margin-left:12px;letter-spacing:.08em}
+.day-head .stay{margin-top:9px;font-size:12px;color:var(--muted)}
+.day-head .stay b{color:var(--text-soft);font-weight:500}
+.day.is-today .day-head{border-top-color:var(--shu)}
+.day.is-today .day-head .meta{color:var(--shu)}
+.today-chip{
+  display:inline-block;margin-left:10px;padding:2px 9px;border:1px solid var(--shu);color:var(--shu);
+  font-size:9.5px;letter-spacing:.2em;font-weight:700;vertical-align:middle;
+}
+
+/* ---------- BLOCKS ---------- */
+.blocks{margin-top:20px;position:relative;padding-left:22px}
+.blocks::before{content:"";position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--line)}
+.blk{position:relative;padding:13px 0 15px}
+.blk+.blk{border-top:1px solid var(--line-soft)}
+.blk::before{
+  content:"";position:absolute;left:-22px;top:20px;width:9px;height:9px;border-radius:50%;
+  background:var(--bg);border:1.5px solid var(--muted);
+}
+.blk .time{font-size:11.5px;letter-spacing:.05em;color:var(--muted);font-variant-numeric:tabular-nums}
+.blk .time .jst{color:var(--text-soft)}
+.blk .name{font-size:15.5px;color:var(--text);margin-top:5px;font-weight:400;line-height:1.45}
+.blk .name .jp{color:var(--muted);font-size:12px;margin-left:9px;font-family:'Shippori Mincho',Georgia,serif}
+.blk .note{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+.blk .tag{
+  display:inline-block;font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+  padding:2px 7px;margin-right:8px;vertical-align:1px;border:1px solid var(--line);color:var(--muted);
+}
+.blk.k-sleep::before{border-color:var(--sleep)}
+.blk.k-sleep .name{color:var(--text-soft)}
+.blk.k-meal::before{border-color:var(--gold)}
+.blk.k-transit::before,.blk.k-flight::before{border-color:var(--transit)}
+.blk.k-plan::before{border-color:var(--shu);background:var(--shu)}
+.blk.est .name{color:var(--text-soft)}
+.blk.past{opacity:.42}
+
+.blk.now{
+  margin-left:-14px;padding:16px 14px 18px;
+  border:1px solid var(--shu);border-left:2px solid var(--shu);
+  background:linear-gradient(120deg,rgba(232,80,60,.10),transparent 70%);
+  box-shadow:0 0 34px rgba(232,80,60,.10);
+  opacity:1;
+}
+.blk.now+.blk{border-top:none}
+.blk.now::before{display:none}   /* the pulsing dot inside is the marker */
+.blk.now .nowtag{
+  display:inline-flex;align-items:center;gap:7px;margin-bottom:9px;
+  font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:700;color:var(--shu);
+}
+.blk.now .name{color:var(--text);font-weight:500}
+
+/* ---------- EMPTY STATES ---------- */
+.state{margin-top:40px;border:1px solid var(--line);background:var(--bg2);padding:38px 24px;text-align:center}
+.state .jp{font-family:'Shippori Mincho',Georgia,serif;font-size:34px;color:var(--shu);opacity:.85}
+.state h2{font-family:'Shippori Mincho',Georgia,serif;font-size:23px;font-weight:700;margin-top:16px}
+.state p{color:var(--muted);font-size:14px;margin-top:12px;max-width:390px;margin-inline:auto}
+.state .cd{margin-top:20px;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+
+/* ---------- CLOCKS ---------- */
+.clocks{display:flex;gap:0;margin-top:24px;border:1px solid var(--line-soft);background:var(--bg2)}
+.clocks div{flex:1;padding:13px 14px;text-align:center}
+.clocks div+div{border-left:1px solid var(--line-soft)}
+.clocks .z{font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.clocks .t{font-family:'Shippori Mincho',Georgia,serif;font-size:20px;margin-top:5px;font-variant-numeric:tabular-nums}
+.clocks .t.jp-t{color:var(--shu)}
+
+footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--muted);line-height:1.7}
+footer .jp{font-family:'Shippori Mincho',Georgia,serif;color:var(--shu);letter-spacing:.2em}
+
+@media(max-width:420px){
+  .wrap{padding:0 16px}
+  .blocks{padding-left:18px}
+  .blk.now{margin-left:-12px;padding-left:12px}
+}
+@media(prefers-reduced-motion:reduce){.pulse::after{animation:none;opacity:.3}}
+</style>
+</head>
+<body>
+
+<div class="hero-sun" id="heroSun" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="sun"></span><span class="bt">Japan · Aug 2026</span></div>
+    <h1>Where's Saksham<span class="jp mincho">今どこ</span></h1>
+    <div class="trip-line" id="tripLine"></div>
+    <div class="clocks">
+      <div><div class="z">Japan · JST</div><div class="t jp-t mincho" id="clkJst">—</div></div>
+      <div><div class="z">India · IST</div><div class="t mincho" id="clkIst">—</div></div>
+    </div>
+    <p class="caveat"><b>Heads up —</b> everything except the flights, trains and booked slots is an
+      <b>estimate</b>. The blocks between plans are guesses at what he's likely doing. Real life runs
+      earlier, later, or somewhere else entirely.</p>
+  </header>
+
+  <div class="switch">
+    <button id="btnToday" class="on" onclick="setView('today')">Today</button>
+    <button id="btnMap" onclick="setView('map')">Map</button>
+    <button id="btnAll" onclick="setView('all')">Whole trip</button>
+  </div>
+
+  <main id="view"></main>
+
+  <footer>
+    <span class="jp mincho">道中御無事に</span><br>
+    Read-only. Built from the Torii trip plan — times shown in Japan time and India time.
+  </footer>
+</div>
+
+<script>
+"use strict";
+const TRIP = {"days":[{"weekday":"Tue","iso":"2026-08-04","dateLabel":"4 August","n":0,"weather":"","title":"Departure day","jp":"出発","city":"Delhi","hotel":null,"acts":[],"cityLL":[28.6139,77.209],"pre":[{"start":0,"end":990,"kind":"free","title":"Home in Delhi — the last day before the trip","ll":[28.6139,77.209],"note":"Packing, charging everything, the pre-trip admin."},{"start":990,"end":1440,"kind":"transit","title":"Bags in the car, heading for Delhi airport","from":[28.6139,77.209],"to":[28.5562,77.1],"note":"Flight CX 698 goes out tonight."}]},{"weekday":"Wed","iso":"2026-08-05","dateLabel":"5 August","n":1,"weather":"33°/26° ☂34%","title":"Arrival","jp":"到着","city":"Osaka","cityLL":[34.6937,135.5023],"hotel":{"name":"Royal Park Hotel Iconic Osaka Midosuji","city":"Osaka","area":"Osaka · Financial district, 2–8 min to subway","ll":[34.684,135.501]},"acts":[{"start":900,"tag":null,"slot":"3:00 PM","name":"Land at Kansai (KIX), private van to hotel","jp":"関西空港到着","note":"Land ~3 PM. Immigration + bags for 7 takes real time — budget ~1.5 hrs. Private van (~50 min) straight to Royal Park Iconic Midosuji, check in, freshen up.","ll":[34.4342,135.2325]},{"start":1110,"tag":null,"slot":"6:30 PM","name":"Dōtonbori — the neon night","jp":"道頓堀","note":"Ease into Japan with the dazzling one: the neon canal, the Glico running man, street food everywhere. Low-energy, high-wonder first night.","ll":[34.6687,135.5013]},{"start":1200,"tag":"Dinner","slot":"8:00 PM · Dinner","name":"First dinner in Osaka","jp":"晩ごはん","note":"Relaxed vegetarian dinner around Dōtonbori / Namba, then back to the hotel to sleep off the flight.","ll":null}],"pre":[{"start":0,"end":135,"kind":"transit","title":"Delhi airport — check-in, security, boarding","ll":[28.5562,77.1],"note":"Bags in, seven boarding passes, the long wait at the gate."},{"start":135,"end":775,"kind":"flight","title":"In the air — CX 698 · DEL → HKG → KIX","path":[[28.5562,77.1],[22.308,113.9185],[34.4342,135.2325]],"note":"Wheels up from Delhi, a change at Hong Kong, then down into Kansai. Ticketed times."},{"start":775,"end":900,"kind":"transit","title":"Landed at KIX — immigration and baggage","ll":[34.4342,135.2325],"note":"Ticketed landing is 12:55 JST; the plan allows until 3 PM to clear immigration and bags for seven and reach the van."}]},{"weekday":"Thu","iso":"2026-08-06","dateLabel":"6 August","n":2,"weather":"33°/25° ☂35%","title":"Osaka → Kyoto","jp":"大阪から京都","city":"Osaka","cityLL":[34.6937,135.5023],"hotel":{"name":"nol kyoto sanjo Hotel Premier Kyoto Shijo","city":"Kyoto","area":"Kyoto · Shijo-Karasuma, central downtown Kyoto","ll":[35.009,135.759]},"acts":[{"start":570,"tag":"Breakfast","slot":"9:30 AM · Breakfast","name":"Breakfast at the hotel","jp":"朝食","note":"Unhurried hotel breakfast — included at Royal Park Iconic.","ll":null},{"start":660,"tag":null,"slot":"11:00 AM","name":"Shitennō-ji Temple","jp":"四天王寺","note":"Out of the hotel by 11. Japan's oldest official temple — five-storey pagoda, open courtyards. ~45 min, gentle cultural start.","ll":[34.6544,135.5166]},{"start":735,"tag":null,"slot":"12:15 PM","name":"Osaka Castle","jp":"大阪城","note":"The moated icon. ~1.5 hrs for grounds + photos. △ Open pick: this slot can swap for the Shinsaibashi vintage watch hunt instead — both cases are in the Decisions box (tab on the right).","ll":[34.6873,135.5259]},{"start":840,"tag":"Lunch","slot":"2:00 PM · Lunch","name":"Lunch","jp":"昼食","note":"Near the castle, or grab something at Shin-Osaka before the train.","ll":null},{"start":930,"tag":null,"slot":"3:30 PM","name":"Shinkansen to Kyoto, check in","jp":"京都へ","note":"Taxi to Shin-Osaka (~20 min), Shinkansen to Kyoto (~15 min ride). Check in nol kyoto sanjo Shijo by ~5, settle in for three nights.","ll":[34.9858,135.7588]},{"start":1170,"tag":"Dinner","slot":"7:30 PM · Dinner","name":"Dinner at the hotel","jp":"夕食","note":"Easy first Kyoto night — dinner at the nol kyoto sanjo, straight to sleep.","ll":null}],"pre":[]},{"weekday":"Fri","iso":"2026-08-07","dateLabel":"7 August","n":3,"weather":"32°/24° ☂36%","title":"Kyoto — the big walk","jp":"京都","city":"Kyoto","cityLL":[35.0116,135.7681],"hotel":{"name":"nol kyoto sanjo Hotel Premier Kyoto Shijo","city":"Kyoto","area":"Kyoto · Shijo-Karasuma, central downtown Kyoto","ll":[35.009,135.759]},"acts":[{"start":360,"tag":null,"slot":"6:00 AM","name":"Fushimi Inari at dawn","jp":"伏見稲荷大社","note":"Leave the hotel 5:30. Ten thousand vermilion torii, empty at first light — climb to the Yotsutsuji viewpoint (~2 hrs). The alarm is worth it.","ll":[34.9671,135.7727]},{"start":540,"tag":"Breakfast","slot":"9:00 AM · Breakfast","name":"Breakfast at the hotel","jp":"朝食","note":"Back at the hotel to eat and freshen up after the dawn climb.","ll":null},{"start":630,"tag":null,"slot":"10:30 AM","name":"Kimono & hakama rental — fitting","jp":"着物・袴レンタル","note":"Rental shop at the foot of the Higashiyama slopes (Okamoto's Kiyomizu branches are the classic pick — men's kimono + hakama and women's sets, huge stock). Fitting for 7 takes ~1 hr; women's hair styling adds a little. Reserve ahead for a group this size in August. Outfits stay on for the whole walk.","ll":[34.9958,135.7808]},{"start":690,"tag":null,"slot":"11:30 AM","name":"Higashiyama walk — in kimono","jp":"東山 · 八坂の塔","note":"Sannenzaka → Ninenzaka preserved lanes → Yasaka Pagoda → Kiyomizu-dera, drifting toward Gion — ~2 hrs, the most photogenic walk of the trip, now with all 7 of you dressed for it. Geta sandals slow the pace a touch; that's the point.","ll":[34.9982,135.7803]},{"start":780,"tag":null,"slot":"1:00 PM","name":"Mochi Mochi — live pounding show","jp":"もちもち","note":"On the Kiyomizu slope itself — no detour. High-energy hand-pounding show, then fresh matcha or chocolate mochi topped with a strawberry, all vegan (~¥1,000 a piece, one easily shared between two). Walk-in; short queue moves fast. Return the kimonos at the end of the walk, ~2:15.","ll":[34.9948,135.781]},{"start":885,"tag":"Lunch","slot":"2:45 PM · Lunch","name":"Nishiki Market — late lunch & browse","jp":"錦市場","note":"Kyoto's Kitchen — 400-year-old covered lane, ~15 min taxi after returning the outfits. The mochi holds everyone over, so a grazing late lunch works: pickles, tofu doughnuts, tea, crafts. ~1 hr.","ll":[35.005,135.7649]},{"start":960,"tag":null,"slot":"4:00 PM","name":"Hotel rest","jp":"休憩","note":"Deliberate break — August heat with 7 people makes this non-optional, doubly so after a kimono walk. Nap, shower, recharge. Shorter than usual; out again at 5:00.","ll":null},{"start":1050,"tag":null,"slot":"5:30 PM","name":"Arashiyama bamboo grove","jp":"嵐山竹林","note":"Taxi ~30 min, leave 5:00. The towering bamboo corridor + Togetsukyo bridge in softer late light, thinner crowds — sunset is ~6:55, so the light window works. ~1.25 hrs. △ Open pick: Nijō Castle and Sanjūsangen-dō are on the table instead — trade-offs in the Decisions box.","ll":[35.017,135.6718]},{"start":1200,"tag":"Dinner","slot":"8:00 PM · Dinner","name":"Dinner at the hotel","jp":"夕食","note":"Back at the nol kyoto sanjo after the biggest walking day — keep it easy.","ll":null}],"pre":[]},{"weekday":"Sat","iso":"2026-08-08","dateLabel":"8 August","n":4,"weather":"32°/24° ☂36%","title":"Kyoto — river & gold","jp":"京都","city":"Kyoto","cityLL":[35.0116,135.7681],"hotel":{"name":"nol kyoto sanjo Hotel Premier Kyoto Shijo","city":"Kyoto","area":"Kyoto · Shijo-Karasuma, central downtown Kyoto","ll":[35.009,135.759]},"acts":[{"start":450,"tag":"Breakfast","slot":"7:30 AM · Breakfast","name":"Early breakfast at the hotel","jp":"朝食","note":"One of the two early days — the river cruise leaves at 9:30. nol kyoto sanjo does a good veg spread.","ll":null},{"start":600,"tag":null,"slot":"10:00 AM","name":"Hozugawa Gorge river cruise","jp":"保津川下り","note":"Taxi to Kameoka ~8:30 (~40 min). Traditional wooden boat down the gorge — forested cliffs, gentle rapids, ~2 hrs, landing right at Arashiyama. △ Weather call at 8 AM — the rain plan is in the Decisions box.","ll":[35.0125,135.5786]},{"start":885,"tag":null,"slot":"2:45 PM","name":"WIFE & HUSBAND — coffee by the Kamo","jp":"コーヒー","note":"Taxi ~25 min from Arashiyama to Kitaoji. The tiny couple-run coffee house — house-roasted beans, the famous honey cheese toast, antiques everywhere. Only ~10 seats, so for 7 people reserve ahead — or do it their signature way: the picnic basket (thermos, treats, rentable stools) carried 100 steps to the Kamo riverbank. They close at 5 and keep irregular holidays — confirm Sat 8 Aug is open when reserving; if it isn't, we re-plan together. ~1 hr.","ll":[35.0417,135.763]},{"start":960,"tag":null,"slot":"4:00 PM","name":"Kinkaku-ji — the Golden Pavilion","jp":"金閣寺","note":"Taxi ~10 min from the cafe. The gold-leaf temple on its mirror lake in late-afternoon light — ~1 hr; entry runs to 5:00, so don't linger over the coffee.","ll":[35.0394,135.7292]},{"start":1020,"tag":null,"slot":"5:00 PM","name":"Knife forging workshop","jp":"包丁作り体験","note":"Hands-on with a Kyoto blacksmith — hammer and shape your own knife to take home. ~1.5 hrs. Group split: 4 of us at the forge.","ll":[35.0036,135.7681]},{"start":1020,"tag":null,"slot":"5:00 PM","name":"Chopstick making — alongside the forge","jp":"お箸作り","note":"Traditional chopstick carving and finishing, running parallel to the knife session — the other 5 of us here (if children are allowed to join; agent confirming). Take-home pair each. Included in the agent's package.","ll":null},{"start":1200,"tag":"Dinner","slot":"8:00 PM · Dinner","name":"Dinner at the hotel","jp":"夕食","note":"Last Kyoto night — dinner at the nol kyoto sanjo. Pack tonight: big bags go by courier to Tokyo in the morning, Fuji day is daypacks only.","ll":null}],"pre":[]},{"weekday":"Sun","iso":"2026-08-09","dateLabel":"9 August","n":5,"weather":"31°/22° ☂45%","title":"Kyoto → Fuji → Tokyo","jp":"富士山経由・東京","city":"Tokyo","cityLL":[35.6895,139.6917],"hotel":{"name":"Hyatt Regency Tokyo","city":"Tokyo","area":"Tokyo · Nishi-Shinjuku, ~10 min walk to Shinjuku Station","ll":[35.6913,139.6929]},"acts":[{"start":405,"tag":"Breakfast","slot":"6:45 AM · Breakfast","name":"Early breakfast, courier the bags","jp":"朝食・宅急便","note":"Second early day — has to be. Eat early (konbini backup if the hotel opens late), hand the big bags to the desk for takkyūbin courier to the Tokyo hotel — they arrive tomorrow.","ll":null},{"start":513,"tag":null,"slot":"8:33 AM","name":"Shinkansen — Kyoto → Odawara","jp":"新幹線","note":"Confirmed: Hikari No. 642, dep 8:33 AM Kyoto → arr 10:38 AM Odawara. Taxi to Kyoto Station ~7:45. Travel light.","ll":[35.2564,139.1553]},{"start":660,"tag":null,"slot":"11:00 AM","name":"Private van picks up at Odawara","jp":"プライベートバン","note":"The van carries you the rest of the day: Odawara → Lake Ashi → Shiraito → Oishi Park → Tokyo. Pre-booked, fixed day price. Long day by design — six stops, ~13 hours door to door; the family should know going in.","ll":null},{"start":690,"tag":null,"slot":"11:30 AM","name":"Lake Ashi & the floating torii","jp":"芦ノ湖・箱根神社","note":"~25 min from Odawara. The great red torii of Hakone Shrine standing in the lake, mountains all around — the classic Hakone photo stop. ~1 hr, out by 12:15.","ll":[35.2048,139.0257]},{"start":720,"tag":null,"slot":"12:00 PM","name":"Hakone Sightseeing Cruise — Lake Ashi","jp":"箱根海賊船","note":"The \"pirate ship\" crossing of Lake Ashi — Fuji over the water on a clear day, torii of Hakone Shrine from the deck. ~30–40 min crossing. Included in the agent's package; awaiting his confirmed sailing time — this slot is our preference.","ll":[35.1917,139.0263]},{"start":780,"tag":null,"slot":"1:00 PM","name":"Hakone Ropeway — Ōwakudani","jp":"箱根ロープウェイ","note":"Cable cars over the volcanic Ōwakudani valley — steaming vents, sulphur springs, black eggs boiled in the pools, Fuji views if it's clear. Runs subject to volcanic-gas conditions. Included in the package; agent to confirm the timing and that the full day still fits.","ll":[35.244,139.0197]},{"start":840,"tag":"Lunch","slot":"2:00 PM · Lunch","name":"Lunch","jp":"昼食","note":"Near Fujinomiya after the ~1h15 drive around the mountain from Lake Ashi.","ll":null},{"start":930,"tag":null,"slot":"3:30 PM","name":"Shiraito Falls","jp":"白糸の滝","note":"The 'white threads' waterfall — a wide silk curtain fed by Fuji's snowmelt. ~1 hr at the falls, 5 min from lunch.","ll":[35.3086,138.5928]},{"start":1050,"tag":null,"slot":"5:30 PM","name":"Oishi Park — lake & Mt Fuji","jp":"大石公園","note":"Lake Kawaguchiko with Fuji rising behind the flower fields — the photo the day is built around (~1 hr drive from Shiraito). ~1.75 hrs of lakeside time. August haze note: Fuji hides often — mornings are clearest, so temper expectations.","ll":[35.5289,138.73]},{"start":1140,"tag":null,"slot":"7:00 PM","name":"Van to Tokyo, check in","jp":"東京着","note":"~2h15 (Sunday traffic can stretch it). Arrive Hyatt Regency Tokyo, Shinjuku ~8:45 PM — home for the next five nights. Bags arrive tomorrow.","ll":[35.6913,139.6929]},{"start":1305,"tag":"Dinner","slot":"9:45 PM · Dinner","name":"Dinner at the hotel","jp":"夕食","note":"Big day done — dinner at the Hyatt, straight to bed.","ll":null}],"pre":[]},{"weekday":"Mon","iso":"2026-08-10","dateLabel":"10 August","n":6,"weather":"31°/25° ☂38%","title":"Tokyo — art & speed","jp":"東京","city":"Tokyo","cityLL":[35.6895,139.6917],"hotel":{"name":"Hyatt Regency Tokyo","city":"Tokyo","area":"Tokyo · Nishi-Shinjuku, ~10 min walk to Shinjuku Station","ll":[35.6913,139.6929]},"acts":[{"start":570,"tag":"Breakfast","slot":"9:30 AM · Breakfast","name":"Breakfast at the hotel","jp":"朝食","note":"Unhurried Hyatt spread, out of the hotel by 11.","ll":null},{"start":720,"tag":null,"slot":"12:00 PM","name":"teamLab Planets","jp":"チームラボプラネッツ","note":"Book the 12:00 slot. Barefoot through water and light — realistically 2–2.5 hrs inside. Toyosu, ~35 min from Shinjuku.","ll":[35.6497,139.79]},{"start":870,"tag":"Lunch","slot":"2:30 PM · Lunch","name":"Michelin-listed ramen — Soranoiro","jp":"ソラノイロ","note":"Right after teamLab, as lunch. Soranoiro (Michelin Bib Gourmand) pioneered veggie ramen — a proper vegetarian bowl. Quick bowls, ~45 min.","ll":[35.6838,139.7385]},{"start":null,"tag":null,"slot":"Afternoon","name":"Harajuku — Takeshita Street","jp":"原宿","note":"Flexible — fashion, crepes, madness after lunch. Decide on the ground how long to linger; just be back for the 5:30 pickup.","ll":[35.6712,139.705]},{"start":1050,"tag":null,"slot":"5:30 PM","name":"R34 night run + Daikoku PA","jp":"首都高ナイトツアー","note":"Pickup 5:30 PM sharp. In the cars, not just looking: a Skyline run over the neon expressway, ending at the legendary Daikoku parking-area meet. Runs ~4 hours, back around 9:30. ✓ Already booked separately on our side.","ll":[35.4547,139.6716]},{"start":1320,"tag":"Dinner","slot":"10:00 PM · Dinner","name":"Gonpachi","jp":"権八","note":"Straight off the drift — no ramen stop before it now, so this can land a bit earlier than before.","ll":null}],"pre":[]},{"weekday":"Tue","iso":"2026-08-11","dateLabel":"11 August","n":7,"weather":"31°/25° ☂38%","title":"Birthday · Sky & Speed","jp":"誕生日","city":"Tokyo","cityLL":[35.6895,139.6917],"hotel":{"name":"Hyatt Regency Tokyo","city":"Tokyo","area":"Tokyo · Nishi-Shinjuku, ~10 min walk to Shinjuku Station","ll":[35.6913,139.6929]},"acts":[{"start":570,"tag":"Breakfast","slot":"9:30 AM · Breakfast","name":"Birthday breakfast at the hotel","jp":"朝食","note":"Slow morning — the evening is the main event.","ll":null},{"start":600,"tag":null,"slot":"10:00 AM","name":"Don Quijote — the everything store","jp":"ドン・キホーテ","note":"The Shinjuku flagship (Kabukicho), a short hop from the Hyatt — floor after floor of literally everything: skincare, snacks, souvenirs, gadgets, costumes. No rush this morning — take the time here.","ll":[35.6942,139.7031]},{"start":735,"tag":"Lunch","slot":"12:15 PM · Lunch","name":"Pizza at Savoy — Andrew Schulz’s pick","jp":"サヴォイ 麻布十番","note":"The Azabu-Juban legend Schulz called the best pizza he’s had — better than New York. Wood-fired margherita/marinara, both vegetarian, so all 7 are sorted. Tiny counter shop — arrive at 12:00 opening or split across two seatings; no lunch reservations. Taxi Gyoen → Azabu-Juban ~15 min, then ~10 min on to Omotesando for shopping.","ll":[35.6553,139.7361]},{"start":840,"tag":null,"slot":"2:00 PM","name":"Shopping — Omotesando & Harajuku","jp":"表参道・原宿 買物","note":"Onitsuka Tiger flagship (Omotesando), Gentle Monster (Harajuku), and stationery at Loft / Tokyu Hands — all within the same walkable stretch. ~3 hrs of birthday shopping, then 12 min to Shibuya by 5:45.","ll":[35.6663,139.7085]},{"start":960,"tag":null,"slot":"4:00 PM","name":"Age.3 — the fried cream sando","jp":"揚げサン","note":"The viral one: milk bread deep-fried till crackly, split and piped full of whipped cream (strawberry, matcha, crème brûlée — plus egg-salad savouries, so everyone's covered). The Age.3×Q branch at Kita-Sandō is ~12 min walk from Takeshita Street — a mid-shopping sugar stop, no detour. Walk-in, expect a short queue; sandwiches sell out, so don't leave it past ~5.","ll":[35.6795,139.7035]},{"start":1080,"tag":null,"slot":"6:00 PM","name":"Shibuya Sky — sunset","jp":"渋谷スカイ","note":"The open rooftop as the sun drops (~6:25 PM in mid-August) and Tokyo turns to neon below. Book the ~6 PM slot the moment the 2-week window opens — sunset sells out first. ~1.5 hrs.","ll":[35.658,139.7016]},{"start":1200,"tag":"Dinner","slot":"8:00 PM · Dinner","name":"Birthday dinner — Indian restaurant","jp":"誕生日","note":"Agent is suggesting and booking a good Indian restaurant near the Hyatt for 7 this evening. Name and time land once he confirms — update this card then.","ll":null}],"pre":[]},{"weekday":"Wed","iso":"2026-08-12","dateLabel":"12 August","n":8,"weather":"32°/26° ☂38%","title":"Enoshima Beach Day","jp":"江ノ島","city":"Day trip + Tokyo","cityLL":null,"hotel":{"name":"Hyatt Regency Tokyo","city":"Tokyo","area":"Tokyo · Nishi-Shinjuku, ~10 min walk to Shinjuku Station","ll":[35.6913,139.6929]},"acts":[{"start":420,"tag":"Breakfast","slot":"7:00 AM · Breakfast","name":"Breakfast at the hotel","jp":"朝食","note":"Beach kit packed the night before — towels, sunscreen, change of clothes.","ll":null},{"start":450,"tag":null,"slot":"7:30 AM","name":"Van to Enoshima","jp":"江ノ島へ","note":"By private van, not train — no station transfers, straight there. ~70 min depending on traffic.","ll":null},{"start":525,"tag":null,"slot":"8:45 AM","name":"Katase Nishihama Beach","jp":"片瀬西浜海岸","note":"Sand, safe swimming, beach houses for drinks and showers — clear days put Mt Fuji across the water. Lunch on the sand at a beach house folds in here. ~2.5 hrs including food.","ll":[35.3053,139.4818]},{"start":675,"tag":null,"slot":"11:15 AM","name":"The Great Buddha — Kōtoku-in","jp":"鎌倉大仏","note":"Short van hop from the beach. The 13 m bronze Buddha, serene in the open air since 1495. ~45 min.","ll":[35.3167,139.5358]},{"start":735,"tag":null,"slot":"12:15 PM","name":"Van back to Tokyo — Akihabara","jp":"秋葉原へ","note":"~70 min back into the city.","ll":null},{"start":825,"tag":null,"slot":"1:45 PM","name":"Yodobashi Akiba — electronics","jp":"ヨドバシAkiba","note":"The ten-storey electronics megastore — cameras, audio, gadgets, games, everything under one roof. ~1.5–2 hrs, tax-free counter with passports.","ll":[35.6994,139.7745]},{"start":1200,"tag":"Dinner","slot":"8:00 PM · Dinner","name":"Farewell dinner — Ninja Tokyo","jp":"忍者東京","note":"Ninjas serve you in a hidden-village restaurant, tricks at the table, dedicated vegetarian course. Reserve ahead for 7. Free time back at the hotel between Yodobashi and dinner.","ll":[35.675,139.737]}],"pre":[]},{"weekday":"Thu","iso":"2026-08-13","dateLabel":"13 August","n":9,"weather":"31°/25° ☂38%","title":"Tokyo DisneySea","jp":"東京ディズニーシー","city":"Tokyo","cityLL":[35.6895,139.6917],"hotel":{"name":"Hyatt Regency Tokyo","city":"Tokyo","area":"Tokyo · Nishi-Shinjuku, ~10 min walk to Shinjuku Station","ll":[35.6913,139.6929]},"acts":[{"start":405,"tag":"Breakfast","slot":"6:45 AM · Breakfast","name":"Early breakfast","jp":"朝食","note":"Last early day of the trip — DisneySea rope-drop needs it. Quick hotel breakfast, out by 7:15.","ll":null},{"start":495,"tag":null,"slot":"8:15 AM","name":"Rope-drop — DisneySea","jp":"開園ダッシュ","note":"At the gates before opening. Fantasy Springs first, then the volcano, the harbour, everything. The park that exists nowhere else on Earth.","ll":[35.6267,139.885]},{"start":780,"tag":"Lunch","slot":"1:00 PM · Lunch","name":"Lunch inside the park","jp":"昼食","note":"Book a table where possible; veg options exist at the table-service spots.","ll":null},{"start":1170,"tag":"Dinner","slot":"7:30 PM · Dinner","name":"Dinner in the park + night harbour show","jp":"夕食","note":"Reserve a park restaurant in advance, then the night spectacular over the water to close it out. Back to the hotel ~10:30 PM.","ll":null}],"pre":[]},{"weekday":"Fri","iso":"2026-08-14","dateLabel":"14 August","n":10,"weather":"31°/25° ☂38%","title":"Sayonara","jp":"さよなら","city":"Tokyo","cityLL":[35.6895,139.6917],"hotel":null,"acts":[{"start":510,"tag":"Breakfast","slot":"8:30 AM · Breakfast","name":"Breakfast, checkout","jp":"朝食","note":"Final hotel breakfast, bags down, checkout.","ll":null},{"start":600,"tag":null,"slot":"10:00 AM","name":"Free last morning","jp":"自由時間","note":"Konbini run, last souvenirs around Shinjuku — nothing scheduled, nothing rushed.","ll":null},{"start":720,"tag":"Lunch","slot":"12:00 PM · Lunch","name":"Light lunch","jp":"昼食","note":"Near the hotel before the airport run.","ll":null},{"start":780,"tag":null,"slot":"1:00 PM","name":"Private van to Haneda, fly home","jp":"出発","note":"~40 min to HND with all the luggage. Ten days, three cities, one Fuji day, one beach — done properly.","ll":[35.5494,139.7798]}],"pre":[],"tail":{"kind":"flight","title":"At Haneda, then in the air — flying home","path":[[35.5494,139.7798],[22.308,113.9185],[28.5562,77.1]],"note":"Bags checked, last of the yen spent, then the long one back to Delhi."}}],"flight":"CX 698 · DEL → HKG → KIX","route":[{"city":"Osaka","ll":[34.6937,135.5023],"nights":"1 night · Aug 5–6"},{"city":"Kyoto","ll":[35.0116,135.7681],"nights":"3 nights · Aug 6–9"},{"city":"Tokyo","ll":[35.6895,139.6917],"nights":"5 nights · Aug 9–14"}],"hotels":[{"cityjp":"大阪","city":"Osaka","dates":"1 night · Aug 5–6","name":"Royal Park Hotel Iconic Osaka Midosuji","area":"Osaka · Financial district, 2–8 min to subway"},{"cityjp":"京都","city":"Kyoto","dates":"3 nights · Aug 6–9","name":"nol kyoto sanjo Hotel Premier Kyoto Shijo","area":"Kyoto · Shijo-Karasuma, central downtown Kyoto"},{"cityjp":"東京","city":"Tokyo","dates":"5 nights · Aug 9–14","name":"Hyatt Regency Tokyo","area":"Tokyo · Nishi-Shinjuku, ~10 min walk to Shinjuku Station"}]};
+
+/* ---------- time ---------------------------------------------------------
+   Everything is anchored to a JST calendar date plus minutes-from-midnight
+   JST, so the page reads the same whichever timezone the phone is in.
+   JST = UTC+9, IST = UTC+5:30 — a flat 210-minute gap, no DST either side. */
+const JST_OFFSET = 9 * 60;
+const IST_OFFSET = 5.5 * 60;
+const JST_MINUS_IST = JST_OFFSET - IST_OFFSET;   /* 210 */
+
+function epochOf(iso, mins){
+  const p = iso.split('-').map(Number);
+  return Date.UTC(p[0], p[1] - 1, p[2]) + (mins - JST_OFFSET) * 60000;
+}
+function jstParts(ms){
+  const d = new Date(ms + JST_OFFSET * 60000);
+  return {iso: d.toISOString().slice(0, 10), mins: d.getUTCHours() * 60 + d.getUTCMinutes()};
+}
+function clock(mins){
+  mins = ((Math.round(mins) % 1440) + 1440) % 1440;
+  let h = Math.floor(mins / 60); const m = mins % 60;
+  const ap = h < 12 ? 'AM' : 'PM';
+  h = h % 12 || 12;
+  return h + ':' + String(m).padStart(2, '0') + ' ' + ap;
+}
+/* The one conversion everything renders through. */
+function dual(mins){
+  const ist = mins - JST_MINUS_IST;
+  const shift = ist < 0 ? ' −1d' : (ist >= 1440 ? ' +1d' : '');
+  return '<span class="jst">' + clock(mins) + ' JST</span><span class="dot">·</span>'
+       + clock(ist) + ' IST' + shift;
+}
+function range(a, b){
+  const end = b >= 1440 ? 1440 : b;
+  return dual(a) + ' <span class="dot">→</span> <span class="jst">' + clock(end) + '</span>';
+}
+
+/* ---------- block inference ---------------------------------------------
+   Named activities come straight out of Torii. Everything between them is
+   filled in here, once, by rule — nothing is written out by hand. */
+const TRANSIT_RE = /shinkansen|private van|van to|van back|van picks|taxi|odakyu line|jr to|to haneda|land at|courier the bags|check in/i;
+const MEAL_RE = /^(breakfast|lunch|dinner)$/i;
+/* Venues you spend a whole stretch inside. Two consecutive activities at the
+   same venue mean he stayed put — labelling that gap "travelling to…" (or worse,
+   "back at the hotel") is just wrong on an all-day park or beach. */
+const VENUES = [
+  {re: /in(side)? the park|disneysea|rope-drop|harbour show/i, id: 'park', label: 'Still inside DisneySea'},
+  {re: /at the hotel|hotel rest/i, id: 'hotel', label: 'Downtime at the hotel'}
+];
+function venueOf(name){
+  for (let i = 0; i < VENUES.length; i++) if (VENUES[i].re.test(name)) return VENUES[i];
+  return null;
+}
+
+/* Torii's notes usually state how long a stop takes ("~2 hrs", "~45 min").
+   Prefer that over a flat guess. Hours win over minutes, since minute figures
+   in the same note are nearly always the taxi ride, not the stop itself. */
+function durFromNote(note){
+  if (!note) return 0;
+  const re = /(\d+(?:\.\d+)?)\s*(hrs?|hours?|mins?|minutes?)/gi;
+  let m, hrs = 0, mins = 0;
+  while ((m = re.exec(note))){
+    const v = parseFloat(m[1]);
+    if (/^h/i.test(m[2])) hrs = Math.max(hrs, v * 60); else mins = Math.max(mins, v);
+  }
+  const d = hrs || mins;
+  return d ? Math.min(300, Math.max(15, Math.round(d))) : 0;
+}
+function estDur(a){
+  if (a.tag && /breakfast/i.test(a.tag)) return 60;
+  if (a.tag && /lunch/i.test(a.tag)) return 75;
+  if (a.tag && /dinner/i.test(a.tag)) return 90;
+  if (TRANSIT_RE.test(a.name)) return 60;
+  return durFromNote(a.note) || 90;
+}
+function kindOf(a){
+  if (a.tag && MEAL_RE.test(a.tag)) return 'meal';
+  if (TRANSIT_RE.test(a.name)) return 'transit';
+  return 'plan';
+}
+function firstSentence(s){
+  if (!s) return '';
+  const m = s.match(/^[^.!?]{0,190}[.!?]/);
+  return (m ? m[0] : s.slice(0, 150)).trim();
+}
+
+function buildBlocks(day, prevDay){
+  const out = [];
+
+  /* Fixed legs (the flights) are pre-computed from Torii's ticketed times. */
+  (day.pre || []).forEach(function(b){
+    out.push({start: b.start, end: b.end, kind: b.kind, name: b.title, note: b.note, est: false,
+              ll: b.ll, path: b.path, from: b.from, to: b.to});
+  });
+
+  /* Resolve activities: merge anything sharing a start time, and give a slot
+     with no clock ("Afternoon") the space right after the previous one. */
+  const acts = [];
+  day.acts.forEach(function(a){
+    const prev = acts[acts.length - 1];
+    if (a.start === null){
+      if (!prev) return;
+      acts.push(Object.assign({}, a, {start: prev.start + estDur(prev), inferredTime: true}));
+      return;
+    }
+    if (prev && prev.start === a.start){
+      prev.name += ' + ' + a.name;
+      prev.note = prev.note + ' ' + a.note;
+      return;
+    }
+    acts.push(Object.assign({}, a));
+  });
+
+  if (acts.length){
+    const dayStart = out.length ? out[out.length - 1].end : acts[0].start;
+
+    /* Morning bookend — asleep, then getting ready. */
+    if (!out.length && acts[0].start > 0){
+      const early = acts[0].start < 8 * 60;
+      const wake = Math.max(0, acts[0].start - (early ? 45 : 75));
+      const bed = prevDay && prevDay.hotel ? prevDay.hotel : day.hotel;
+      if (wake > 0) out.push({start: 0, end: wake, kind: 'sleep', est: true,
+        name: 'Asleep' + (bed ? ' — ' + bed.name : ''), ll: bed && bed.ll,
+        note: bed ? bed.city + '. ' + (early ? 'Short night — early start ahead.' : '') : ''});
+      out.push({start: wake, end: acts[0].start, kind: 'free', est: true,
+        name: early ? 'Alarm, up and out' : 'Waking up, getting ready', ll: bed && bed.ll,
+        note: 'Showers and bags for seven — this part always takes longer than planned.'});
+    } else if (out.length && out[out.length - 1].end < acts[0].start){
+      out[out.length - 1].end = acts[0].start;
+    }
+    void dayStart;
+
+    acts.forEach(function(a, i){
+      const next = acts[i + 1];
+      let dur = estDur(a);
+      const gap = next ? next.start - a.start : null;
+
+      if (gap !== null && gap <= dur){
+        dur = gap;                                   /* short gap: fold it in */
+      }
+      const end = a.start + dur;
+      out.push({start: a.start, end: end, kind: kindOf(a), name: a.name, jp: a.jp,
+                note: firstSentence(a.note), est: !!a.inferredTime, planned: true,
+                slot: a.slot, ll: a.ll, place: !!a.ll});
+
+      if (gap !== null){
+        const slack = next.start - end;
+        if (slack >= 45){
+          const backAtBase = venueOf(next.name) && venueOf(next.name).id === 'hotel';
+          const base = day.hotel && day.hotel.ll;
+          const vPrev = venueOf(a.name), vNext = venueOf(next.name);
+          if (vPrev && vNext && vPrev.id === vNext.id){
+            out.push({start: end, end: next.start, est: true, kind: 'free',
+              name: vPrev.label, ll: next.ll || a.ll || base,
+              note: vPrev.id === 'park'
+                ? 'Rides, shows and queues — the long middle of a park day.'
+                : 'Nothing booked in this stretch.'});
+          } else if (backAtBase){
+            out.push({start: end, end: next.start, est: true, kind: 'free',
+              name: (TRANSIT_RE.test(a.name) ? 'Checking in and settling' : 'Back at the hotel')
+                    + ' — free until ' + next.name,
+              from: a.ll, to: next.ll || base,
+              note: 'Estimated — the trip back plus whatever’s left of the evening.'});
+          } else if (next.start - end >= 150){
+            /* Too long to be a journey. Call the bulk of it free time and only
+               the tail end the actual trip across. */
+            const leave = next.start - 60;
+            out.push({start: end, end: leave, est: true, kind: 'free',
+              name: 'Free stretch — nothing booked', ll: a.ll,
+              note: 'A long gap in the plan; anyone’s guess how it gets filled.'});
+            out.push({start: leave, end: next.start, est: true, kind: 'transit',
+              name: 'Heading to ' + next.name, from: a.ll, to: next.ll,
+              note: 'Estimated — trains, taxis and walking between stops.'});
+          } else {
+            out.push({start: end, end: next.start, est: true, kind: 'transit',
+              name: 'Travelling to ' + next.name,
+              from: a.ll, to: next.ll,
+              note: 'Estimated — trains, taxis and walking between stops.'});
+          }
+        } else if (slack > 0){
+          out[out.length - 1].end = next.start;      /* under 45 min: absorb it */
+        }
+      }
+    });
+
+    /* Evening bookend — back at the hotel, then asleep. A day with a fixed
+       tail (the flight home) uses that instead of an invented hotel night. */
+    const last = out[out.length - 1];
+    if (day.tail && last.end < 1440){
+      out.push({start: last.end, end: 1440, kind: day.tail.kind, est: false,
+                name: day.tail.title, note: day.tail.note, path: day.tail.path});
+    } else if (last.end < 1440){
+      const base = day.hotel && day.hotel.ll;
+      const bedtime = Math.min(1440, Math.max(last.end + 45, 23 * 60 + 30));
+      if (bedtime > last.end) out.push({start: last.end, end: bedtime, kind: 'free', est: true,
+        name: day.hotel ? 'Back at ' + day.hotel.name + ' — winding down' : 'Winding down for the night',
+        from: last.ll, to: base, note: 'Showers, photos, tomorrow’s plan.'});
+      const l2 = out[out.length - 1];
+      if (l2.end < 1440) out.push({start: l2.end, end: 1440, kind: 'sleep', est: true,
+        name: 'Asleep' + (day.hotel ? ' — ' + day.hotel.name : ''), ll: base,
+        note: day.hotel ? day.hotel.city + '.' : ''});
+    }
+  } else if (out.length && out[out.length - 1].end < 1440){
+    out[out.length - 1].end = 1440;
+  }
+
+  return out;
+}
+
+/* Blocks are built once per day and cached on the day object. */
+TRIP.days.forEach(function(d, i){ d.blocks = buildBlocks(d, TRIP.days[i - 1]); });
+
+/* Carry a position forward through any block that didn't get one, so the map
+   always has somewhere to put him even on an unmapped stop. */
+TRIP.days.forEach(function(d){
+  let last = (d.hotel && d.hotel.ll) || d.cityLL;
+  d.blocks.forEach(function(b){
+    const end = b.path ? b.path[b.path.length - 1] : (b.to || b.ll);
+    if (!b.ll && !b.from && !b.path) b.ll = last;
+    if (end) last = end;
+  });
+});
+
+/* ---------- where is he, exactly ---------------------------------------- */
+function lerp(a, b, t){ return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]; }
+function alongPath(path, t){
+  let total = 0; const segs = [];
+  for (let i = 1; i < path.length; i++){
+    const dy = path[i][0] - path[i-1][0], dx = path[i][1] - path[i-1][1];
+    const len = Math.sqrt(dy*dy + dx*dx);
+    segs.push(len); total += len;
+  }
+  if (!total) return path[0];
+  let want = t * total;
+  for (let i = 0; i < segs.length; i++){
+    if (want <= segs[i]) return lerp(path[i], path[i+1], segs[i] ? want / segs[i] : 0);
+    want -= segs[i];
+  }
+  return path[path.length - 1];
+}
+/* Progress through the block, so a travel leg actually moves across the map. */
+function positionAt(day, block, mins){
+  if (!block) return (day && ((day.hotel && day.hotel.ll) || day.cityLL)) || null;
+  const span = block.end - block.start;
+  const t = span > 0 ? Math.min(1, Math.max(0, (mins - block.start) / span)) : 0;
+  if (block.path) return alongPath(block.path, t);
+  if (block.from && block.to) return lerp(block.from, block.to, t);
+  return block.ll || block.to || block.from
+      || (day && ((day.hotel && day.hotel.ll) || day.cityLL)) || null;
+}
+
+const FIRST = TRIP.days[0], LAST = TRIP.days[TRIP.days.length - 1];
+const TRIP_START = epochOf(FIRST.iso, 0);
+const TRIP_END = epochOf(LAST.iso, 1440);
+
+/* ---------- render ------------------------------------------------------- */
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+function findNow(now){
+  const p = jstParts(now);
+  const day = TRIP.days.find(function(d){ return d.iso === p.iso; });
+  if (!day) return {day: null, block: null};
+  const block = day.blocks.find(function(b){ return p.mins >= b.start && p.mins < b.end; });
+  return {day: day, block: block || null, mins: p.mins};
+}
+
+function blockHtml(b, day, state){
+  const cls = ['blk', 'k-' + b.kind];
+  if (b.est) cls.push('est');
+  if (state === 'now') cls.push('now');
+  if (state === 'past') cls.push('past');
+  const tag = b.est ? '<span class="tag">est</span>' : '';
+  return '<div class="' + cls.join(' ') + '"' + (state === 'now' ? ' id="nowBlock"' : '') + '>'
+    + (state === 'now' ? '<div class="nowtag"><span class="pulse"></span>Right now</div>' : '')
+    + '<div class="time">' + range(b.start, b.end) + '</div>'
+    + '<div class="name">' + tag + esc(b.name)
+      + (b.jp ? '<span class="jp">' + esc(b.jp) + '</span>' : '') + '</div>'
+    + (b.note ? '<div class="note">' + esc(b.note) + '</div>' : '')
+    + '</div>';
+}
+
+function dayHtml(day, opts){
+  const now = opts.now, isToday = opts.isToday, nowBlock = opts.nowBlock;
+  const p = jstParts(now);
+  let h = '<section class="day' + (isToday ? ' is-today' : '') + '">'
+    + '<div class="day-head">'
+    + '<div class="meta">' + esc(day.weekday) + ' · ' + esc(day.dateLabel) + ' · '
+      + (day.n === 0 ? 'Day 0' : 'Day ' + day.n)
+      + (isToday ? '<span class="today-chip">Today</span>' : '') + '</div>'
+    + '<h3>' + esc(day.title) + (day.jp ? '<span class="jp mincho">' + esc(day.jp) + '</span>' : '') + '</h3>'
+    + (day.hotel
+        ? '<div class="stay">Tonight: <b>' + esc(day.hotel.name) + '</b> · ' + esc(day.hotel.city) + '</div>'
+        : (day.n === 0 ? '<div class="stay">Flies out tonight.</div>'
+                       : '<div class="stay">Last day — flying home.</div>'))
+    + '</div><div class="blocks">';
+  day.blocks.forEach(function(b){
+    let state = '';
+    if (isToday && b === nowBlock) state = 'now';
+    else if (isToday && p.mins >= b.end) state = 'past';
+    h += blockHtml(b, day, state);
+  });
+  return h + '</div></section>';
+}
+
+/* ---------- map ----------------------------------------------------------
+   Leaflet + CARTO dark tiles, fetched only when the Map tab is first opened so
+   the rest of the page still works with no network at all. */
+const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+const LEAFLET_JS  = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+let leafletState = 'idle';
+const leafletWaiters = [];
+function loadLeaflet(cb){
+  if (window.L) return cb(null);
+  leafletWaiters.push(cb);
+  if (leafletState === 'loading') return;
+  if (leafletState === 'failed') return finishLeaflet(new Error('offline'));
+  leafletState = 'loading';
+  const css = document.createElement('link');
+  css.rel = 'stylesheet'; css.href = LEAFLET_CSS;
+  document.head.appendChild(css);
+  const s = document.createElement('script');
+  s.src = LEAFLET_JS; s.async = true;
+  s.onload = function(){ finishLeaflet(window.L ? null : new Error('no leaflet')); };
+  s.onerror = function(){ finishLeaflet(new Error('offline')); };
+  document.head.appendChild(s);
+  setTimeout(function(){ if (leafletState === 'loading') finishLeaflet(new Error('timeout')); }, 9000);
+}
+function finishLeaflet(err){
+  leafletState = err ? 'failed' : 'ready';
+  leafletWaiters.splice(0).forEach(function(f){ f(err); });
+}
+
+let mapObj = null, meMarker = null, meHalo = null;
+
+function meIcon(){
+  return L.divIcon({className: '', html: '<div class="me-dot"></div>',
+                    iconSize: [16, 16], iconAnchor: [8, 8]});
+}
+function stopIcon(done){
+  return L.divIcon({className: '', html: '<div class="stop-dot' + (done ? ' done' : '') + '"></div>',
+                    iconSize: [9, 9], iconAnchor: [4.5, 4.5]});
+}
+
+/* Pins: only stops Torii actually gives a place for. Blocks that merely
+   inherited a position (a hotel breakfast, "Lunch") would stack duplicate pins
+   on the same spot, so they stay off the map as markers. */
+function locatedStops(){
+  const out = [];
+  TRIP.days.forEach(function(d){
+    d.blocks.forEach(function(b){
+      if (b.planned && b.place && b.ll) out.push({day: d, block: b, ll: b.ll});
+    });
+  });
+  return out;
+}
+/* The line, though, follows everything — including the trips back to the hotel. */
+function routePoints(){
+  const out = [];
+  TRIP.days.forEach(function(d){
+    d.blocks.forEach(function(b){
+      const p = b.ll || b.to;
+      if (!p) return;
+      const last = out[out.length - 1];
+      if (last && last[0] === p[0] && last[1] === p[1]) return;
+      out.push(p);
+    });
+  });
+  return out;
+}
+
+function buildMap(){
+  const host = document.getElementById('map');
+  if (!host) return;
+  loadLeaflet(function(err){
+    const still = document.getElementById('map');
+    if (!still) return;                      /* tab was switched while loading */
+    if (err){
+      still.className = 'dead';
+      still.innerHTML = 'The map needs a connection to load.<br>Everything else on this page works offline — '
+                      + 'tap <b style="color:var(--text-soft)">Today</b> for the written version.';
+      return;
+    }
+    if (mapObj) return;
+    mapObj = L.map(still, {zoomControl: true, scrollWheelZoom: false, attributionControl: true});
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd', maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    }).addTo(mapObj);
+
+    const stops = locatedStops();
+
+    /* The trip traced in order, plus the flights. Both are shape-of-the-whole-
+       trip lines: zoomed into one city they'd just be spaghetti radiating off
+       the edges, so they fade out past zoom 9. */
+    const lines = [];
+    lines.push(L.polyline(routePoints().filter(function(p){ return p[1] > 130; }),
+      {color: '#D9A84E', weight: 1.4, opacity: .38}).addTo(mapObj));
+    TRIP.days.forEach(function(d){
+      d.blocks.forEach(function(b){
+        if (b.path) lines.push(L.polyline(b.path,
+          {color: '#E8503C', weight: 1.2, opacity: .34, dashArray: '5,7'}).addTo(mapObj));
+      });
+    });
+    const tuneLines = function(){
+      const wide = mapObj.getZoom() < 10;
+      lines.forEach(function(l, i){
+        l.setStyle({opacity: wide ? (i ? .34 : .38) : 0});
+      });
+    };
+    mapObj.on('zoomend', tuneLines);
+    tuneLines();
+
+    const now = Date.now(), p = jstParts(now);
+    stops.forEach(function(s){
+      const past = s.day.iso < p.iso || (s.day.iso === p.iso && p.mins >= s.block.end);
+      L.marker(s.ll, {icon: stopIcon(past)}).addTo(mapObj)
+        .bindPopup('<span class="pt">' + esc(s.day.weekday + ' ' + s.day.dateLabel) + '</span>'
+                 + '<b>' + esc(s.block.name) + '</b><br>' + range(s.block.start, s.block.end));
+    });
+
+    meMarker = L.marker([35.0, 135.7], {icon: meIcon(), zIndexOffset: 1000, interactive: false}).addTo(mapObj);
+
+    /* Open on him when the trip is live, on the whole route otherwise. Doing
+       this instead of fitBounds-then-setView: fitBounds re-applies itself once
+       the container settles and was overriding the recentre. */
+    const cur = findNow(Date.now());
+    const pos = cur.day ? positionAt(cur.day, cur.block, cur.mins) : null;
+    if (pos) mapObj.setView(pos, 10, {animate: false});
+    else fitTrip();
+    updateMap(false);
+    setTimeout(function(){ if (mapObj) mapObj.invalidateSize(); }, 60);
+  });
+}
+
+/* animate:false throughout — a zoom animation that never gets its transition
+   event (reduced motion, background tab, throttled renderer) leaves the view
+   silently stuck at the old zoom. Programmatic moves don't need the tween. */
+function fitTrip(){
+  if (!mapObj) return;
+  const pts = locatedStops().map(function(s){ return s.ll; });
+  if (pts.length) mapObj.fitBounds(L.latLngBounds(pts).pad(0.12), {animate: false});
+}
+function recentreMe(){
+  const cur = findNow(Date.now());
+  const pos = cur.day ? positionAt(cur.day, cur.block, cur.mins) : null;
+  if (mapObj && pos) mapObj.setView(pos, Math.max(mapObj.getZoom(), 11), {animate: false});
+  else fitTrip();
+}
+
+function updateMap(recentre){
+  const cap = document.getElementById('mapCap');
+  const now = Date.now(), cur = findNow(now);
+  const pos = cur.day ? positionAt(cur.day, cur.block, cur.mins) : null;
+
+  if (cap){
+    if (!cur.day){
+      cap.innerHTML = now < TRIP_START
+        ? 'The trip hasn’t started — this is the route he’ll be taking.'
+        : 'Trip’s over. This was the route.';
+    } else {
+      cap.innerHTML = '<b>' + esc(cur.block ? cur.block.name : cur.day.title) + '</b>'
+        + '<span class="t">' + (cur.block ? range(cur.block.start, cur.block.end) : '') + '</span>'
+        + '<span class="t">Estimated position from the itinerary — not a live GPS fix.</span>';
+    }
+  }
+  if (!mapObj || !meMarker) return;
+  if (pos){
+    meMarker.setLatLng(pos);
+    meMarker.setOpacity(1);
+    if (recentre) mapObj.setView(pos, Math.max(mapObj.getZoom(), 9), {animate: false});
+  } else {
+    meMarker.setOpacity(0);
+  }
+}
+
+let view = 'today';
+function setView(v){
+  if (view === 'map' && v !== 'map' && mapObj){ mapObj.remove(); mapObj = null; meMarker = null; }
+  view = v;
+  document.getElementById('btnToday').classList.toggle('on', v === 'today');
+  document.getElementById('btnMap').classList.toggle('on', v === 'map');
+  document.getElementById('btnAll').classList.toggle('on', v === 'all');
+  render(true);
+}
+
+function render(scroll){
+  const now = Date.now();
+  const cur = findNow(now);
+  const host = document.getElementById('view');
+
+  const t = jstParts(now);
+  document.getElementById('clkJst').textContent = clock(t.mins);
+  document.getElementById('clkIst').textContent = clock(t.mins - JST_MINUS_IST);
+  document.getElementById('tripLine').textContent =
+    FIRST.dateLabel + ' – ' + LAST.dateLabel + ' 2026 · Osaka · Kyoto · Tokyo';
+
+  let html = '';
+
+  if (view === 'map'){
+    /* Never re-innerHTML a live map — it would tear down the tiles every 30s. */
+    if (!document.getElementById('map')){
+      host.innerHTML = '<div id="mapWrap"><div id="map"></div><div class="map-cap" id="mapCap"></div>'
+        + '<div class="map-acts"><button onclick="recentreMe()">Centre on him</button>'
+        + '<button onclick="fitTrip()">Whole route</button></div></div>'
+        + '<div class="state" style="margin-top:24px;padding:22px 20px">'
+        + '<p style="margin:0">Pins are the booked stops. The pulsing one is where the itinerary '
+        + 'says he should be right now — <b style="color:var(--text-soft)">an estimate</b>, not a live location.</p></div>';
+      buildMap();
+    }
+    updateMap(false);
+    return;
+  }
+
+  if (view === 'all'){
+    TRIP.days.forEach(function(d){
+      html += dayHtml(d, {now: now, isToday: d === cur.day, nowBlock: cur.block});
+    });
+  } else if (now < TRIP_START){
+    const days = Math.ceil((TRIP_START - now) / 86400000);
+    html = '<div class="state"><div class="jp mincho">まだ</div>'
+      + '<h2>The trip hasn’t started yet</h2>'
+      + '<p>He’s still in Delhi. Ten days across Osaka, Kyoto and Tokyo start on '
+      + esc(FIRST.dateLabel) + '.</p>'
+      + '<div class="cd">' + days + (days === 1 ? ' day' : ' days') + ' to go</div></div>';
+  } else if (now >= TRIP_END){
+    html = '<div class="state"><div class="jp mincho">お帰り</div>'
+      + '<h2>Trip’s over — he’s back home</h2>'
+      + '<p>Ten days, three cities, one Fuji day and one beach. Ask him for the photos.</p>'
+      + '<div class="cd">Home since ' + esc(LAST.dateLabel) + '</div></div>';
+  } else if (cur.day){
+    if (cur.block){
+      html += '<div class="nowcard"><div class="k"><span class="pulse"></span>He’s probably</div>'
+        + '<h2>' + esc(cur.block.name) + '</h2>'
+        + '<div class="when">' + range(cur.block.start, cur.block.end) + '</div>'
+        + (cur.block.est ? '<p>Estimated block — nothing booked at this hour, this is the likely shape of it.</p>'
+                         : '<p>From the plan.</p>')
+        + '</div>';
+    }
+    html += dayHtml(cur.day, {now: now, isToday: true, nowBlock: cur.block});
+    html += '<div class="state" style="margin-top:34px;padding:26px 20px">'
+      + '<p style="margin:0">Want the rest? Tap <b style="color:var(--text-soft)">The whole trip</b> up top.</p></div>';
+  }
+
+  host.innerHTML = html;
+
+  if (scroll){
+    const el = document.getElementById('nowBlock');
+    if (el && view === 'all') el.scrollIntoView({behavior: 'smooth', block: 'center'});
+  }
+}
+
+/* Sun parallax, lifted from Torii's scroll handler. */
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+window.addEventListener('scroll', function(){
+  const sun = document.getElementById('heroSun');
+  if (sun && !reduceMotion) sun.style.transform = 'translateY(' + document.documentElement.scrollTop * 0.18 + 'px)';
+}, {passive: true});
+
+render(false);
+setInterval(function(){ render(false); }, 30000);
+</script>
+</body>
+</html>
